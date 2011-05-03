@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "ffprobe"
   gem.homepage = "http://github.com/mbj/ffprobe"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Wrapper for ffmpegs ffprobe}
+  gem.description = %Q{Simple wrapper for ffprobe, it uses -show_stream and -show_format for more exact details}
   gem.email = "mbj@seonic.net"
   gem.authors = ["Markus Schirp"]
   # dependencies defined in Gemfile
