@@ -1,0 +1,2 @@
+Add FFProbe::Result#stream interface
+Spec for edge cases, take them from streamio-ffmpeg
