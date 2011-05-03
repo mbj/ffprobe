@@ -1,6 +1,7 @@
 = ffprobe
 
-Description goes here.
+Simple wrapper around ffprobe cli utility, should be more exact than other tools, it uses -show_stream and -show_format for extraction.
+See specs for usage!
 
 == Contributing to ffprobe
  
