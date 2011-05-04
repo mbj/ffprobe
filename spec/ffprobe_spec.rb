@@ -1,10 +1,17 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "FFProbe" do
-  describe 'successful' do
+  describe 'unsuccessful' do
+    let(:result) { FFProbe.probe('/dev/null') }
+    specify { result.should be_nil }
+  end
+
+  describe 'successful result' do
     let(:result) { FFProbe.probe(path) }
+
     describe 'test.mp4' do
       let(:path) { 'spec/data/test.mp4' }
+      specify { result.should be_kind_of(FFProbe::Result) }
       specify { result.streams.length.should == 2 }
       specify { result.format_names.should == %w(mov mp4 m4a 3gp 3g2 mj2) }
       specify { result.guessed_format_name.should == 'mp4' }
@@ -23,6 +30,7 @@ describe "FFProbe" do
 
       specify do
         stream = result.streams[0]
+        stream.should be_kind_of(FFProbe::Stream)
         stream.index.should == 0
         stream.codec_name.should == 'h264'
         stream.codec_long_name.should == 'H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10'
@@ -46,6 +54,7 @@ describe "FFProbe" do
         }
 
         stream = result.streams[1]
+        stream.should be_kind_of(FFProbe::Stream)
         stream.tags.should == {
           'creation_time'=>'2011-02-28 15:24:43',
           'language'=>'eng'
@@ -67,7 +76,6 @@ describe "FFProbe" do
         stream.duration.should == 11.114667
         stream.nb_frames.should == 521
       end
-
 
       context 'overridden filename' do
         let(:result) { FFProbe.probe(path,:filename => 'test.m4a') }
