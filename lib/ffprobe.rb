@@ -1,13 +1,28 @@
 require 'open3'
 
 module FFProbe
+  class Stream
+    NAMES = %w(index codec_name codec_long_name codec_type codec_time_base codec_tag_string codec_tag width height has_b_frames pix_fmt r_frame_rate avg_frame_rate time_base start_time duration nb_frames tags sample_rate channels bits_per_sample)
+    NAMES.each do |name|
+      attr_reader name
+    end
+    attr_reader :attributes
+
+    def initialize(attributes)
+      @attributes = attributes
+      NAMES.each do |name|
+        instance_variable_set("@#{name}",attributes[name])
+      end
+    end
+  end
+
   class Result
-    NAMES = %w(duration size bit_rate tags streams format_names start_time guessed_format_name)
+    NAMES = %w(duration streams size bit_rate tags streams format_names start_time guessed_format_name)
     NAMES.each do |name|
       attr_reader name
     end
 
-    def initialize(format,streams)
+    def initialize(format)
       NAMES.each do |name|
         instance_variable_set("@#{name}",format[name])
       end
@@ -50,7 +65,8 @@ module FFProbe
           return nil unless current
           name,value = $1,$2
           value = case name
-          when 'duration','bit_rate','start_time' then value.to_f
+          when 'duration','bit_rate','start_time','sample_rate' then value.to_f
+          when 'channels','index','width','height','nb_frames','bits_per_sample' then value.to_i
           when 'format_name' then
             name = 'format_names'
             value.split ','
@@ -75,8 +91,8 @@ module FFProbe
       end
       guessed ||= names.first
       format['guessed_format_name']=guessed
-      format['streams']=streams
-      Result.new(format,streams)
+      format['streams']=streams.map { |stream| Stream.new stream }
+      Result.new(format)
     end
   end
 end
