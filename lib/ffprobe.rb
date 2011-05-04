@@ -27,6 +27,28 @@ module FFProbe
         instance_variable_set("@#{name}",format[name])
       end
     end
+
+    def video_streams
+      streams.select { |stream| stream.codec_type == 'video' }
+    end
+
+    def audio_streams
+      streams.select { |stream| stream.codec_type == 'audio' }
+    end
+
+    def video_stream
+      if(video_streams.length != 1)
+        raise "found #{video_streams.length} video_streams, do not knew what to return"
+      end
+      video_streams.first
+    end
+
+    def audio_stream
+      if(audio_streams.length != 1)
+        raise "found #{audio_streams.length} video_streams, do not knew what to return"
+      end
+      audio_streams.first
+    end
   end
 
   class << self

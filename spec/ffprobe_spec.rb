@@ -28,7 +28,7 @@ describe "FFProbe" do
         }
       }
 
-      specify do
+      specify 'streams' do
         stream = result.streams[0]
         stream.should be_kind_of(FFProbe::Stream)
         stream.index.should == 0
@@ -75,6 +75,22 @@ describe "FFProbe" do
         stream.start_time.should == 0.0
         stream.duration.should == 11.114667
         stream.nb_frames.should == 521
+      end
+
+      describe '#audio_streams' do
+        specify { result.audio_streams.should == [result.streams[1]] }
+      end
+
+      describe '#video_streams' do
+        specify { result.video_streams.should == [result.streams[0]] }
+      end
+
+      describe '#video_stream' do
+        specify { result.video_stream.should == result.streams[0] }
+      end
+
+      describe '#audio_stream' do
+        specify { result.audio_stream.should == result.streams[1] }
       end
 
       context 'overridden filename' do
