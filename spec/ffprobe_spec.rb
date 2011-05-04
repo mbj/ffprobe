@@ -48,6 +48,8 @@ describe "FFProbe" do
         stream.start_time.should == 0.0
         stream.duration.should ==  11.039844
         stream.nb_frames.should == 276
+        stream.size.should == 1113658
+        stream.bitrate.should == 807009.9541261634  
         stream.tags.should == {
           'creation_time'=>'2011-02-28 15:24:43', 
           'language'=>'und'
@@ -68,6 +70,7 @@ describe "FFProbe" do
         stream.codec_tag.should == '0x6134706d' 
         stream.sample_rate.should == 48000.0
         stream.channels.should == 2
+        stream.size.should == 88554
         stream.bits_per_sample.should == 0
         stream.r_frame_rate.should == '0/0'
         stream.avg_frame_rate.should == '0/0'
@@ -75,7 +78,10 @@ describe "FFProbe" do
         stream.start_time.should == 0.0
         stream.duration.should == 11.114667
         stream.nb_frames.should == 521
+        stream.bitrate.should == 63738.481773677966
       end
+
+      specify { result.size.should > result.audio_stream.size + result.video_stream.size }
 
       describe '#audio_streams' do
         specify { result.audio_streams.should == [result.streams[1]] }

@@ -2,7 +2,7 @@ require 'open3'
 
 module FFProbe
   class Stream
-    NAMES = %w(index codec_name codec_long_name codec_type codec_time_base codec_tag_string codec_tag width height has_b_frames pix_fmt r_frame_rate avg_frame_rate time_base start_time duration nb_frames tags sample_rate channels bits_per_sample)
+    NAMES = %w(size index codec_name codec_long_name codec_type codec_time_base codec_tag_string codec_tag width height has_b_frames pix_fmt r_frame_rate avg_frame_rate time_base start_time duration nb_frames tags sample_rate channels bits_per_sample)
     NAMES.each do |name|
       attr_reader name
     end
@@ -13,6 +13,14 @@ module FFProbe
       NAMES.each do |name|
         instance_variable_set("@#{name}",attributes[name])
       end
+    end
+
+    def byterate
+      size / duration
+    end
+
+    def bitrate
+      byterate * 8
     end
   end
 
@@ -54,7 +62,7 @@ module FFProbe
   class << self
     def probe(path,opts={})
       data = status = nil
-      Open3.popen3('ffprobe','-show_streams','-show_format',path) do |stdin,stdout,stderr,waiter|
+      Open3.popen3('ffprobe','-show_packets','-show_streams','-show_format',path) do |stdin,stdout,stderr,waiter|
         stdin.close
         data = stdout.read
         status = waiter.value.exitstatus
@@ -69,34 +77,37 @@ module FFProbe
     KEY_TAG_VALUE = %r(\ATAG:([A-Za-z_]+)=(.*)\Z)
 
     def make_result(data,opts={})
-      streams = []
-      format = nil
-      current = {}
+      streams,sizes = [], []
+      current = mode = format = nil
       data.each_line do |line|
         if line =~ CONTAINER_START
           current = { 'tags' => {} }
           case $1
-          when 'STREAM' then streams << current 
-          when 'FORMAT' then format = current
+          when 'STREAM' then streams << current; mode = :stream
+          when 'FORMAT' then format = current; mode = :format
+          when 'PACKET' then mode = :packet
           else 
             return nil # unkown container
           end
         elsif line =~ CONTAINER_END
+          if mode == :packet
+            stream_index = current['stream_index']
+            sizes[stream_index] ||= 0
+            sizes[stream_index]+=current['size']
+          end
           current = nil
         elsif line =~ KEY_VALUE
           return nil unless current
           name,value = $1,$2
           value = case name
           when 'duration','bit_rate','start_time','sample_rate' then value.to_f
-          when 'channels','index','width','height','nb_frames','bits_per_sample' then value.to_i
+          when 'stream_index','size','channels','index','width','height','nb_frames','bits_per_sample' then value.to_i
           when 'format_name' then
             name = 'format_names'
             value.split ','
-          when 'size' then value.to_i
           else value.strip
           end
           raise "#{$1}: #{$2}" unless value
-
           current[name]=value
         elsif line =~ KEY_TAG_VALUE
           return nil unless current 
@@ -113,7 +124,7 @@ module FFProbe
       end
       guessed ||= names.first
       format['guessed_format_name']=guessed
-      format['streams']=streams.map { |stream| Stream.new stream }
+      format['streams']=streams.map { |stream| stream['size']=sizes[stream['index']]; Stream.new stream }
       Result.new(format)
     end
   end
