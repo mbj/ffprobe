@@ -1,6 +1,9 @@
 = ffprobe
 
-Simple wrapper around ffprobe cli utility, should be more exact than other tools, it uses -show_stream and -show_format for extraction.
+Simple ruby wrapper around ffprobe cli utility (from ffmpeg), should be more exact than other tools.
+
+ffprobe uses -show_stream,-show_packets and -show_format for extraction of all relevant metadata
+
 See specs for usage!
 
 == Contributing to ffprobe
