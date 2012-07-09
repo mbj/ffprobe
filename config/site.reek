@@ -9,10 +9,8 @@ UncommunicativeParameterName:
   - !ruby/regexp /[A-Z]/
 LargeClass:
   max_methods: 10
-  # Query needs to be broken up into a builder and executor
-  exclude: [ "Veritas::Adapter::Elasticsearch::Query" ]
   enabled: true
-  max_instance_variables: 3
+  max_instance_variables: 4
 UncommunicativeMethodName:
   accept: []
   exclude: []
