@@ -3,7 +3,6 @@ require 'spec_helper'
 describe FFProbe do
   describe 'successful probe' do
     CACHE = Hash.new do |hash,key|
-      p key
       hash[key] = FFProbe.probe(key)
     end
 
