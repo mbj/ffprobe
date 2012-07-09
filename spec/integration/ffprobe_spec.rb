@@ -1,6 +1,6 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require 'spec_helper'
 
-describe "FFProbe" do
+describe FFProbe do
   describe 'unsuccessful' do
     let(:result) { FFProbe.probe('/dev/null') }
     specify { result.should be_nil }
@@ -39,7 +39,7 @@ describe "FFProbe" do
         stream.codec_tag_string.should == 'avc1'
         stream.codec_tag.should == '0x31637661'
         stream.width.should == 640
-        stream.height.should == 368
+        stream.height.should == 360
         stream.has_b_frames.should == '2'
         stream.pix_fmt.should == 'yuv420p'
         stream.r_frame_rate.should == '25/1'

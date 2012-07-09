@@ -1,12 +1,11 @@
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-require 'rspec'
+# encoding: utf-8
+
 require 'ffprobe'
+require 'spec'
+require 'spec/autorun'
 
-# Requires supporting files with custom matchers and macros, etc,
-# in ./support/ and its subdirectories.
-Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
+# require spec support files and shared behavior
+Dir[File.expand_path('../{support,shared}/**/*.rb', __FILE__)].each { |f| require f }
 
-RSpec.configure do |config|
-  
+Spec::Runner.configure do |config|
 end
