@@ -105,7 +105,7 @@ module FFProbe
 
         stdout, stderr = po[0], pe[0]
 
-        data = Hash.new { |hash,key| hash[key]= '' }
+        data = Hash.new { |hash,key| hash[key]='' }
 
         until stdout.eof? and stderr.eof?
           reads = Kernel.select([stdout, stderr]).first || []
@@ -117,6 +117,10 @@ module FFProbe
         pid,status = Process.waitpid2(pid)
 
         [data.fetch(stdout),data.fetch(stderr),status.exitstatus]
+      ensure
+        [pi,po,pe].flatten.each do |io|
+          io.close unless io.closed?
+        end
       end
     RUBY
   end
