@@ -17,7 +17,7 @@ ForLoopCheck:                    {}
 MethodLineCountCheck:
   line_count: 10
 MethodNameCheck:
-  pattern: !ruby/regexp /\A(?:[a-z\d](?:_?[a-z\d])+[?!=]?|\[\]=?|==|<=>|<<|[+*&|-])\z/
+  pattern: !ruby/regexp /\A(?:capture3|[a-z\d](?:_?[a-z\d])+[?!=]?|\[\]=?|==|<=>|<<|[+*&|-])\z/
 ModuleLineCountCheck:
   line_count: 387
 ModuleNameCheck:

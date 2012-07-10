@@ -15,10 +15,10 @@ describe FFProbe do
 
       its(:nb_streams)  { should be(2) }
       its(:format_name) { should == 'mov,mp4,m4a,3gp,3g2,mj2' }
-      its(:start_time)  { should be(0.to_r) }
-      its(:duration)    { should be('11.114667'.to_r) }
-      its(:size)        { should be(1209536) }
-      its(:bit_rate)    { should be('870587.000000'.to_r) }
+      its(:start_time)  { should eql(Rational(0,1)) }
+      its(:duration)    { should eql(Rational(11114667,1000000)) }
+      its(:size)        { should eql(1209536) }
+      its(:bit_rate)    { should eql(Rational(870587,1)) }
 
       its(:tags) do
         should == {
@@ -30,12 +30,13 @@ describe FFProbe do
         }
       end
 
-      context 'stream [0]' do
+      context 'stream[0]' do
         subject { container.streams[0] }
 
         its(:tags) do 
           should == {
             'creation_time'=>'2011-02-28 15:24:43', 
+            'handler_name' => '',
             'language'=>'und'
           }
         end
@@ -45,57 +46,58 @@ describe FFProbe do
         its(:codec_name)       { should == 'h264'                                      }
         its(:codec_long_name)  { should == 'H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10' }
         its(:codec_type)       { should == 'video'                                     }
-        its(:codec_time_base)  { should == '1/180000'                                  }
+        its(:codec_time_base)  { should eql(Rational(1,180000))                        }
         its(:codec_tag_string) { should == 'avc1'                                      }
         its(:codec_tag)        { should == '0x31637661'                                }
         its(:width)            { should == 640                                         }
         its(:height)           { should == 360                                         }
         its(:has_b_frames)     { should == 2                                           }
         its(:pix_fmt)          { should == 'yuv420p'                                   }
-        its(:r_frame_rate)     { should == Rational(25/1)                              }
-        its(:avg_frame_rate)   { should == Rational(12420000,496793)                   }
-        its(:time_base)        { should == Rational(1,90000)                           }
-        its(:start_time)       { should == Rational(0,1)                               }
-        its(:duration)         { should == '11.039844'.to_r                            }
+        its(:r_frame_rate)     { should eql(Rational(25/1))                            }
+        its(:avg_frame_rate)   { should eql(Rational(12420000,496793))                 }
+        its(:time_base)        { should eql(Rational(1,90000))                         }
+        its(:start_time)       { should eql(Rational(0,1))                             }
+        its(:duration)         { should eql(Rational(11039844,1000000))                }
         its(:nb_frames)        { should == 276                                         }
         its(:size)             { should == 1113658                                     }
-        its(:bitrate)          { should == Rational('807009.9541261634')               }
+        its(:bit_rate)         { should eql(Rational(2227316000000, 2759961))          }
       end
 
-#     context 'stream [1]' do
-#       subject { container.streams[1] }
+      context 'stream[1]' do
+        subject { container.streams[1] }
 
-#       its(:tags) do
-#         should == {
-#           'creation_time'=>'2011-02-28 15:24:43',
-#           'language'=>'eng'
-#         }
-#       end
+        its(:tags) do
+          should == {
+            'creation_time'=>'2011-02-28 15:24:43',
+            'language'=>'eng',
+            'handler_name' => '',
+          }
+        end
 
-#       it {                     should be_a(FFProbe::Stream                           }
-#       its(:index)            { should be(1)                                          }
-#       its(:codec_name )      { should == 'aac'                                       }
-#       its(:codec_long_name)  { should == 'Advanced Audio Coding'                     }
-#       its(:codec_type)       { should == 'audio'                                     }
-#       its(:codec_time_base)  { should == Rational(0,1)                               }
-#       its(:codec_tag_string) { should == 'mp4a'                                      }
-#       its(:codec_tag)        { should == '0x6134706d'                                }
-#       its(:sample_rate)      { should == '48000.0'.to_r                              }
-#       its(:channels)         { should    be(2)                                       }
-#       its(:size)             { should    be(88554)                                   }
-#       its(:bits_per_sample)  { should == be(0)                                       }
-#       its(:r_frame_rate)     { should == '0.0'.to_r                                  }
-#       its(:avg_frame_rate)   { should == '0.0'.to_r                                  }
-#       its(:time_base)        { should == Rational(1,48000)                           }
-#       its(:start_time)       { should == Rational(0,0)                               }
-#       its(:duration)         { should == '11.114667'.to_r                            }
-#       its(:nb_frames)        { should    be(521)                                     }
-#       its(:bitrate)          { should == '63738.481773677966'.to_r                   }
-#     end
+        it {                     should be_a(FFProbe::Stream)                          }
+        its(:index)            { should be(1)                                          }
+        its(:codec_name )      { should == 'aac'                                       }
+        its(:codec_long_name)  { should == 'Advanced Audio Coding'                     }
+        its(:codec_type)       { should == 'audio'                                     }
+      # its(:codec_time_base)  { should eql(Rational(0,1))                             }
+      # its(:codec_tag_string) { should == 'mp4a'                                      }
+      # its(:codec_tag)        { should == '0x6134706d'                                }
+      # its(:sample_rate)      { should eql(Rational(48000,1))                         }
+      # its(:channels)         { should    be(2)                                       }
+      # its(:size)             { should    be(88554)                                   }
+      # its(:bits_per_sample)  { should == be(0)                                       }
+      # its(:r_frame_rate)     { should eql(Rational(0,0))                             }
+      # its(:avg_frame_rate)   { should eql(Rational(0,0))                             }
+      # its(:time_base)        { should eql(Rational(1,48000))                         }
+      # its(:start_time)       { should eql(Rational(0,0))                             }
+      # its(:duration)         { should eql(Rational(11114667,1000000))                }
+      # its(:nb_frames)        { should    be(521)                                     }
+      # its(:bit_rate)         { should eql(Rational(31869240886838983,500000000000)   }
+      end
 
-#     specify 'allows to calculate video and audio stream sizes' do
-#       subject.size.should > container.audio_stream.size + container.video_stream.size
-#     end
+      specify 'allows to calculate stream sizes' do
+        subject.size.should > container.streams.map(&:size).inject(:+)
+      end
     end
   end
 end

@@ -4,7 +4,6 @@ module FFProbe
     include Virtus::ValueObject
 
     attribute :index,            Integer
-    attribute :size,             Integer
     attribute :codec_name,       String
     attribute :codec_long_name,  String
     attribute :codec_type,       String
@@ -13,7 +12,7 @@ module FFProbe
     attribute :codec_tag,        String
     attribute :width,            Integer
     attribute :height,           Integer
-    attribute :has_b_frames,     String
+    attribute :has_b_frames,     Integer
     attribute :pix_fmt,          String
     attribute :r_frame_rate,     Rational
     attribute :avg_frame_rate,   Rational
@@ -26,6 +25,8 @@ module FFProbe
     attribute :channels,         Integer
     attribute :bits_per_sample,  Integer
 
+    attribute :size,             Integer
+
     # Return byte rate avergage
     #
     # @return [Rational]
@@ -36,14 +37,36 @@ module FFProbe
       Rational(size,duration)
     end
 
-    # Return bite rate avergage
+    # Return bitrate avergage
     #
     # @return [Rational]
     #
     # @api private
     #
     def bit_rate
-      byterate * 8
+      byte_rate * 8
+    end
+
+    # Check if stream is an audio stream
+    #
+    # @return [true]
+    # @return [false]
+    #
+    # @api private
+    #
+    def audio?
+      codec_type == 'audio'
+    end
+
+    # Check if stream is a video stream
+    #
+    # @return [true]
+    # @return [false]
+    #
+    # @api private
+    #
+    def video?
+      codec_type == 'video'
     end
   end
 end

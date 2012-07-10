@@ -1,4 +1,4 @@
---exclude-only "spec/,^/"
+--exclude-only "lib/ffprobe/virtus,lib/ffprobe.rb,spec/,^/"
 --sort coverage
 --callsites
 --xrefs

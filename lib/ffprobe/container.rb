@@ -9,8 +9,8 @@ module FFProbe
     attribute :format_long_name, String
     attribute :start_time,       Rational
     attribute :duration,         Rational
+    attribute :bit_rate,         Rational
     attribute :size,             Integer
-    attribute :bit_rate,         Integer
     attribute :tags,             Hash
 
     attribute :streams,      Array[Stream]

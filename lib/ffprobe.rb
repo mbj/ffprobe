@@ -4,18 +4,14 @@ require 'rational'
 require 'multi_json'
 require 'backports'
 
+require 'ffprobe/virtus'
+
 # Library namespace
 module FFProbe
   # Error raised when ffprobe exits nonzero
   class InvalidFileError < RuntimeError; end
 
-  COMMAND = %w(
-    ffprobe 
-      -show_packets
-      -show_streams
-      -show_format
-      -print_format json
-  ).freeze
+  COMMAND = %w(ffprobe -show_packets -show_streams -show_format -print_format json).freeze
 
   # Probe stream metrics via ffprobe
   #
@@ -67,7 +63,7 @@ module FFProbe
   end
   private_class_method :parse
 
-  # Capture command output
+  # Capture stdoutt, stderr, and exitstatus for command execution
   #
   # @param [Array] command
   #
@@ -75,11 +71,12 @@ module FFProbe
   #
   # @api private
   #
-  if Open3.respond_to?(:capture3)
-    def self.capture3(command)
-      Open3.capture3(*command)
-    end
-  else
+  def self.capture3(command)
+    Open3.capture3(*command)
+  end
+  private_class_method :capture3
+
+  unless Open3.respond_to?(:capture3)
     class_eval(<<-RUBY,__FILE__,__LINE__+1)
       def self.capture3(command)
         pi, po, pe = IO.pipe, IO.pipe, IO.pipe
@@ -122,6 +119,7 @@ module FFProbe
           io.close unless io.closed?
         end
       end
+      private_class_method :capture3
     RUBY
   end
 

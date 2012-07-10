@@ -13,7 +13,8 @@ LargeClass:
   max_instance_variables: 4
 UncommunicativeMethodName:
   accept: []
-  exclude: []
+  exclude:
+  - "FFProbe#self.capture3"
   enabled: true
   reject:
   - !ruby/regexp /^[a-z]$/

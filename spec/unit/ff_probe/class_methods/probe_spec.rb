@@ -11,7 +11,7 @@ describe FFProbe, '.probe' do
 
   before do
     command = %w(ffprobe -show_packets -show_streams -show_format -print_format json /path)
-    Open3.should_receive(:capture3).with(*command).and_return([stdout,stderr,status])
+    object.should_receive(:capture3).with(command).and_return([stdout,stderr,status])
   end
 
   context 'when exitstatus is nonzero' do
