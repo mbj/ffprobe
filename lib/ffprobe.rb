@@ -77,7 +77,7 @@ module FFProbe
   #
   if Open3.respond_to?(:capture3)
     def self.capture3(command)
-      Open3.capture3(command)
+      Open3.capture3(*command)
     end
   else
     class_eval(<<-RUBY,__FILE__,__LINE__+1)
