@@ -8,6 +8,7 @@ describe FFProbe::Parser,'#container' do
   context 'when successful' do
     let(:data) do
       { 
+        'format' => {},
         'packets' => [
           {
             'size' => 100,
@@ -61,6 +62,7 @@ describe FFProbe::Parser,'#container' do
 
     let(:data) do
       { 
+        'format' => {},
         'packets' => [
           {
             'size' => '0x10',

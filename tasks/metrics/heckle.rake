@@ -108,6 +108,9 @@ begin
         method = aliases[mod.name][method]
         next if SKIP_METHODS.include?(method.to_s)
 
+        # Prevent infinite IO
+        next if mod == FFProbe and method == 'capture3'
+
         spec_file = spec_prefix.join('class_methods').join(map.file_name(method, mod.name))
 
         unless spec_file.file?
@@ -162,9 +165,9 @@ begin
         specs << [ ".#{method}", descedant_specs ]
       end
 
-      # A mutation can trigger the net_http adapter that tries to contact example.com
-      if mod == Veritas::Adapter::Elasticsearch::Driver
-        specs.delete_if { |method, spec_files| method == '#initialize' }
+      # Prevent infinite IO
+      if mod == FFProbe 
+        specs.delete_if { |method, spec_files| method == '.capture3' }
       end
 
       specs.sort.each do |(method, spec_files)|

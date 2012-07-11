@@ -32,7 +32,7 @@ module FFProbe
     # @api private
     #
     def format
-      @data.fetch('format',{})
+      @data.fetch('format')
     end
 
     # Return streams
