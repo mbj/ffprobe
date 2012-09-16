@@ -1,6 +1,7 @@
 module FFProbe
   # Parse JSON string into format
   class Parser
+
     # Return parsed format
     #
     # @return [Container]

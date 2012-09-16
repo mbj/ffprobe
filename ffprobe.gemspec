@@ -19,7 +19,7 @@ Gem::Specification.new do |gem|
   gem.extra_rdoc_files = %w(TODO)
 
   gem.add_runtime_dependency('backports',  '~> 2.6.1')
-  gem.add_runtime_dependency('virtus',     '~> 0.5.1')
+  gem.add_runtime_dependency('virtus',     '~> 0.5.2')
   gem.add_runtime_dependency('multi_json', '~> 1.3.6')
 
   gem.add_development_dependency('rake',        '~> 0.9.2')

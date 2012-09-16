@@ -1,5 +1,6 @@
 module FFProbe
-  # Represent a packet inside a stream
+
+  # Data packet inside a stream
   class Packet
     include Virtus::ValueObject
 
@@ -14,5 +15,6 @@ module FFProbe
     attribute :size,          Integer
     attribute :pos,           Integer
     attribute :flags,         String
+
   end
 end

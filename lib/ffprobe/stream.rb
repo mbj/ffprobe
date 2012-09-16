@@ -1,5 +1,5 @@
 module FFProbe
-  # Represent an audio or video stream inside an Container
+  # Audio / video stream inside a container
   class Stream
     include Virtus::ValueObject
 
@@ -24,7 +24,6 @@ module FFProbe
     attribute :sample_rate,      Rational
     attribute :channels,         Integer
     attribute :bits_per_sample,  Integer
-
     attribute :size,             Integer
 
     # Return byte rate avergage

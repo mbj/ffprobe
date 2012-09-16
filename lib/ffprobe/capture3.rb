@@ -1,3 +1,4 @@
+# Very dirty hack to support capture3 on non ruby-1.9.3
 unless Open3.respond_to?(:capture3)
   module FFProbe
     class_eval(<<-RUBY,__FILE__,__LINE__+1)

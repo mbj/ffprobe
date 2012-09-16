@@ -36,7 +36,6 @@ describe FFProbe do
         its(:tags) do 
           should == {
             'creation_time'=>'2011-02-28 15:24:43', 
-            'handler_name' => '',
             'language'=>'und'
           }
         end
@@ -70,7 +69,6 @@ describe FFProbe do
           should == {
             'creation_time'=>'2011-02-28 15:24:43',
             'language'=>'eng',
-            'handler_name' => '',
           }
         end
 
