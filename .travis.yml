@@ -1,3 +1,5 @@
+before_install:
+  - sudo apt-get update -qq ffprobe
 language: ruby
 script: 'bundle exec rake ci'
 rvm:
