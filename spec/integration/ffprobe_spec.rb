@@ -75,7 +75,7 @@ describe FFProbe do
         it {                     should be_a(FFProbe::Stream)                          }
         its(:index)            { should be(1)                                          }
         its(:codec_name )      { should == 'aac'                                       }
-        its(:codec_long_name)  { should == 'Advanced Audio Coding'                     }
+        its(:codec_long_name)  { should == 'AAC (Advanced Audio Coding)'               }
         its(:codec_type)       { should == 'audio'                                     }
       # its(:codec_time_base)  { should eql(Rational(0,1))                             }
       # its(:codec_tag_string) { should == 'mp4a'                                      }
