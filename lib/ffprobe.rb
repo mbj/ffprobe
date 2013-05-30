@@ -2,7 +2,6 @@ require 'open3'
 require 'virtus'
 require 'rational'
 require 'multi_json'
-require 'backports'
 
 require 'ffprobe/virtus'
 
