@@ -96,6 +96,48 @@ describe FFProbe do
       specify 'allows to calculate stream sizes' do
         subject.size.should > container.streams.map(&:size).inject(:+)
       end
+
+      context 'frames[0]' do
+        subject { container.frames[0] }
+
+        it {                     should be_a(FFProbe::Frame)                           }
+        its(:media_type)       { should == 'audio'                                     }
+        its(:key_frame)        { should be(1)                                          }
+        its(:pkt_pts)          { should == 1024                                        }
+        its(:pkt_pts_time)     { should eql(Rational(21333,1000000))                   }
+        its(:pkt_dts)          { should == 1024                                        }
+        its(:pkt_dts_time)     { should eql(Rational(21333,1000000))                   }
+        its(:pkt_duration)     { should == 1024                                        }
+        its(:pkt_duration_time){ should eql(Rational(21333,1000000))                   }
+        its(:pkt_pos)          { should == 8203                                        }
+        its(:sample_fmt)       { should == 's16'                                       }
+        its(:nb_samples)       { should == 1024                                        }
+        its(:channels)         { should == 2                                           }
+        its(:channel_layout)   { should == 'stereo'                                    }
+      end
+
+      context 'frames[7]' do
+        subject { container.frames[7] }
+
+        it {                           should be_a(FFProbe::Frame)                     }
+        its(:media_type)             { should == 'video'                               }
+        its(:key_frame)              { should be(1)                                    }
+        its(:pkt_pts)                { should == 0                                     }
+        its(:pkt_pts_time)           { should eql(Rational(0,1))                       }
+        its(:pkt_dts)                { should == 0                                     }
+        its(:pkt_dts_time)           { should eql(Rational(0,1))                       }
+        its(:pkt_duration)           { should == 3600                                  }
+        its(:pkt_duration_time)      { should eql(Rational(1,25))                      }
+        its(:pkt_pos)                { should == 7324                                  }
+        its(:pix_fmt)                { should == 'yuv420p'                             }
+        its(:pict_type)              { should == 'I'                                   }
+        its(:coded_picture_number)   { should == 0                                     }
+        its(:display_picture_number) { should == 0                                     }
+        its(:interlaced_frame)       { should == 0                                     }
+        its(:top_field_first)        { should == 0                                     }
+        its(:repeat_pict)            { should == 0                                     }
+        its(:reference)              { should == 3                                     }
+      end
     end
   end
 end

@@ -9,7 +9,7 @@ module FFProbe
     # @api private
     #
     def container
-      @container ||= Container.new(format.merge(:streams => streams,:packets => packets))
+      @container ||= Container.new(format.merge(:streams => streams,:packets => packets,:frames => frames))
     end
 
   private
@@ -55,8 +55,28 @@ module FFProbe
     # @api private
     #
     def packets
-      @packets ||= @data.fetch('packets',[]).map do |raw|
-        self.class.convert(Packet,raw)
+      @packets ||= @data.fetch('packets_and_frames',[]).inject([]) do |result, raw|
+        if raw['type'] == 'packet'
+          result << self.class.convert(Packet,raw)
+        end
+
+        result
+      end
+    end
+
+    # Return frames
+    #
+    # @return [Array<Frame>]
+    #
+    # @api private
+    #
+    def frames
+      @frames ||= @data.fetch('packets_and_frames',[]).inject([]) do |result, raw|
+        if raw['type'] == 'frame'
+          result << self.class.convert(Frame,raw)
+        end
+
+        result
       end
     end
 

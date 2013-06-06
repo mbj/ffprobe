@@ -15,6 +15,7 @@ module FFProbe
 
     attribute :streams,      Array[Stream]
     attribute :packets,      Array[Packet]
+    attribute :frames,       Array[Frame]
 
     # Return video streams
     #

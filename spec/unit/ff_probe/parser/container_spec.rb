@@ -9,16 +9,27 @@ describe FFProbe::Parser,'#container' do
     let(:data) do
       { 
         'format' => {},
-        'packets' => [
+        'packets_and_frames' => [
           {
+            'type' => 'packet',
             'size' => 100,
             'stream_index' => 0
           },
           {
+            'type' => 'frame',
+            'media_type' => 'audio',
+          },
+          {
+            'type' => 'packet',
             'size' => 10,
             'stream_index' => 0
           },
           {
+            'type' => 'frame',
+            'media_type' => 'video',
+          },
+          {
+            'type' => 'packet',
             'size' => 1,
             'stream_index' => 1
           }
@@ -55,6 +66,19 @@ describe FFProbe::Parser,'#container' do
         its(:size) { should be(100) }
       end
     end
+
+    context 'frames' do
+      subject { result.frames }
+
+      it { should be_a(Array) }
+
+      context '[0]' do
+        subject { result.frames[0] }
+
+        it { should be_a(FFProbe::Frame) }
+        its(:media_type) { should eql('audio') }
+      end
+    end
   end
 
   context 'with coercion failure' do
@@ -63,8 +87,9 @@ describe FFProbe::Parser,'#container' do
     let(:data) do
       { 
         'format' => {},
-        'packets' => [
+        'packets_and_frames' => [
           {
+            'type' => 'packet',
             'size' => '0x10',
             'stream_index' => 0
           }
