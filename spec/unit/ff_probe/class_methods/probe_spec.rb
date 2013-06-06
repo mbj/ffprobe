@@ -10,7 +10,7 @@ describe FFProbe, '.probe' do
   let(:stderr) { 'error' }
 
   before do
-    command = %w(ffprobe -show_packets -show_streams -show_format -print_format json /path)
+    command = %w(ffprobe -show_frames -show_packets -show_streams -show_format -print_format json /path)
     object.should_receive(:capture3).with(command).and_return([stdout,stderr,status])
   end
 

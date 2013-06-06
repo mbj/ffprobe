@@ -10,7 +10,7 @@ module FFProbe
   # Error raised when ffprobe exits nonzero
   class InvalidFileError < RuntimeError; end
 
-  COMMAND = %w(ffprobe -show_packets -show_streams -show_format -print_format json).freeze
+  COMMAND = %w(ffprobe -show_frames -show_packets -show_streams -show_format -print_format json).freeze
 
   # Probe stream metrics via ffprobe
   #
@@ -77,6 +77,7 @@ end
 
 require 'ffprobe/stream'
 require 'ffprobe/packet'
+require 'ffprobe/frame'
 require 'ffprobe/container'
 require 'ffprobe/parser'
 require 'ffprobe/capture3'
